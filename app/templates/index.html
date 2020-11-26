@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3 class="text-center">Hi, {{ current_user.name }}</h3>
+    <div class="container d-flex justify-content-center mt-4">
+        <form action="{{ url_for('index') }}" method="POST">
+            {% if status_db == True %}
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="customRadioInline1" name="q" value="0" class="custom-control-input" onchange="this.form.submit()">
+                    <label class="custom-control-label" for="customRadioInline1">OFF</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="customRadioInline2" name="q" value="1" class="custom-control-input" checked>
+                    <label class="custom-control-label" for="customRadioInline2">ON</label>
+                </div>
+            {% else %}
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="customRadioInline1" name="q" value="0" class="custom-control-input" checked>
+                    <label class="custom-control-label" for="customRadioInline1">OFF</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="customRadioInline2" name="q" value="1" class="custom-control-input" onchange="this.form.submit()">
+                    <label class="custom-control-label" for="customRadioInline2">ON</label>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+    <h6 class="mt-4">Last 6 states</h>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">State</th>
+            <th scope="col">Time</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% if control_list|length != 0 %}
+                {% for item in control_list %}
+                    {% if item["status"]  == "On" %}
+                        <tr class="table-success">
+                    {% else %}
+                        <tr class="table-danger">
+                    {% endif %}
+                            <td><b>{{ item["status"] }}</b></td>
+                            <td>{{ item["delta"] }}</td>
+                            <td>{{ item["date"] }}</td>
+                        </tr>
+                {% endfor %}
+            {% elif first_entry %}
+                <tr class="table-secondary">
+                    <td colspan="3" class="text-center"><b>Waiting for the state to end to do the first register...</b></td>
+                </tr>
+            {% else %}
+            <tr class="table-primary">
+                <td colspan="3" class="text-center"><b>No data yet</b></td>
+            </tr>
+            {% endif %}
+        </tbody>
+      </table>
+
+{% endblock %}
