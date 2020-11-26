@@ -1,1 +1,1 @@
-web: gunicorn app:parkinson
+web: gunicorn parkinson:app
