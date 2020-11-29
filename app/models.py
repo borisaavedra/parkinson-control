@@ -5,6 +5,7 @@ from app import db, login
 
 
 class User(UserMixin, db.Model):
+    __tablename__ = "user_parkinson"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), index=True)
     email = db.Column(db.String(200), index=True, unique=True)
@@ -30,7 +31,7 @@ class ParkinsonControl(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.Boolean)
     starttime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("user_parkinson.id"))
 
     def __repr__(self):
         return '<Control {} {}>'.format(self.status, self.starttime)
