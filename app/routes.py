@@ -5,6 +5,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, ParkinsonControl
 from werkzeug.urls import url_parse
 from datetime import datetime
+from dateutil import tz
 import sqlalchemy.exc
 
 
@@ -51,7 +52,10 @@ def index():
     #####
     if request.method == "POST":
         status = bool(int(request.form["q"]))
-        now = datetime.now()
+        vzla = tz.gettz("GMT-4")
+        server_date = datetime.now()
+        now_vzla = server_date.replace(tzinfo=vzla)
+        now = now_vzla
         control = ParkinsonControl(status=status, starttime=now, user_id=user_id)
         try:
             db.session.add(control)
