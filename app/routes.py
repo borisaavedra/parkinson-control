@@ -54,7 +54,7 @@ def index():
     #####
     if request.method == "POST":
         status = bool(int(request.form["q"]))
-        server_date = datetime.now()
+        server_date = datetime.utcnow()
         now_vzla = server_date.astimezone(tz.gettz("America/Caracas"))
         print(f" HORA DE VENEZUELA: {str(now_vzla)}")
         now = now_vzla
