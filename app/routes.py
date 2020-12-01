@@ -54,7 +54,7 @@ def index():
         status = bool(int(request.form["q"]))
         server_date = datetime.now()
         now_vzla = server_date.astimezone(tz.gettz("America/Caracas"))
-        print(str(now_vzla))
+        print(f" HORA DE VENEZUELA: {str(now_vzla)}")
         now = now_vzla
         control = ParkinsonControl(status=status, starttime=now, user_id=user_id)
         try:
