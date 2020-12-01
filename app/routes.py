@@ -52,9 +52,9 @@ def index():
     #####
     if request.method == "POST":
         status = bool(int(request.form["q"]))
-        vzla = tz.gettz("GMT-4")
         server_date = datetime.now()
-        now_vzla = server_date.replace(tzinfo=vzla)
+        now_vzla = server_date.astimezone(tz.gettz("America/Caracas"))
+        print(str(now_vzla))
         now = now_vzla
         control = ParkinsonControl(status=status, starttime=now, user_id=user_id)
         try:
