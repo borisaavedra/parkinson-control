@@ -49,6 +49,7 @@ def index():
     #####
         if control_db.count() > 1:
             control_list = get_control(control_db)
+            print(f"Hora de la BASE DE DATOS: {control_list[0]["date"]}")
         elif control_db.count() == 1:
             first_entry = True
     #####
