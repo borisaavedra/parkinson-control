@@ -28,7 +28,7 @@ def get_control(base_query):
         delta = no_time + (base_query[n].starttime - base_query[n + 1].starttime)
         control_dict["delta"] = delta.strftime("%H:%M:%S")
         # print("Hora de la base de datos {}".format(str(base_query[n + 1].starttime)))
-        date_vzla = base_query[n + 1].starttime.astimezone("America/Caracas").strftime("%d - %B - %Y | %I:%M %p")
+        date_vzla = base_query[n + 1].starttime.astimezone(pytz.timezone("America/Caracas")).strftime("%d - %B - %Y | %I:%M %p")
         print(f"HORA VENEZUELA DE LA DB {date_vzla}")
         control_dict["date"] = date_vzla.strftime("%d - %B - %Y | %I:%M %p")
         # print("Hora DB despues de formateo {}".format(str(base_query[n + 1].starttime)))
