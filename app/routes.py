@@ -28,7 +28,7 @@ def get_control(base_query):
         control_dict["delta"] = delta.strftime("%H:%M:%S")
         # print("Hora de la base de datos {}".format(str(base_query[n + 1].starttime)))
         control_dict["date"] = base_query[n + 1].starttime.strftime("%d - %B - %Y | %I:%M %p")
-        # print("Hora despues de formateo {}".format(base_query[n + 1].starttime.strftime("%d - %B - %Y | %I:%M %p")))
+        print("Hora DB despues de formateo {}".format(str(base_query[n + 1].starttime)))
         control_dict["status"] = get_state(base_query[n + 1].status)
         control_list.append(control_dict.copy())
         n += 1
