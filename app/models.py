@@ -1,4 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.sql import func
 from flask_login import UserMixin
 from datetime import datetime
 from app import db, login
@@ -30,7 +31,7 @@ class User(UserMixin, db.Model):
 class ParkinsonControl(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.Boolean)
-    starttime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    starttime = db.Column(db.DateTime(timezone=True), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user_parkinson.id"))
 
     def __repr__(self):
