@@ -26,9 +26,9 @@ def get_control(base_query):
     while n < n_register - 1:
         delta = no_time + (base_query[n].starttime - base_query[n + 1].starttime)
         control_dict["delta"] = delta.strftime("%H:%M:%S")
-        print("Hora de la base de datos {}".format(str(base_query[n + 1].starttime)))
+        # print("Hora de la base de datos {}".format(str(base_query[n + 1].starttime)))
         control_dict["date"] = base_query[n + 1].starttime.strftime("%d - %B - %Y | %I:%M %p")
-        print("Hora despues de formateo {}".format(base_query[n + 1].starttime.strftime("%d - %B - %Y | %I:%M %p")))
+        # print("Hora despues de formateo {}".format(base_query[n + 1].starttime.strftime("%d - %B - %Y | %I:%M %p")))
         control_dict["status"] = get_state(base_query[n + 1].status)
         control_list.append(control_dict.copy())
         n += 1
@@ -55,6 +55,7 @@ def index():
     if request.method == "POST":
         status = bool(int(request.form["q"]))
         server_date = datetime.now()
+        print(f" HORA DE SERVIDOR: {str(server_date)}")
         now_vzla = server_date.astimezone(tz.gettz("America/Caracas"))
         print(f" HORA DE VENEZUELA: {str(now_vzla)}")
         now = now_vzla
