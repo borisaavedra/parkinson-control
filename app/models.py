@@ -31,7 +31,7 @@ class User(UserMixin, db.Model):
 class ParkinsonControl(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.Boolean)
-    starttime = db.Column(db.DateTime(timezone=True), index=True)
+    starttime = db.Column(db.DateTime(timezone=True), index=True, default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey("user_parkinson.id"))
 
     def __repr__(self):
