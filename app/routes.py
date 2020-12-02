@@ -59,7 +59,7 @@ def index():
         now_vzla = server_date.astimezone(tz.gettz("America/Caracas"))
         print(f" HORA DE VENEZUELA: {str(now_vzla)}")
         now = now_vzla
-        control = ParkinsonControl(status=status, starttime=now, user_id=user_id)
+        control = ParkinsonControl(status=status, starttime=now_vzla, user_id=user_id)
         try:
             db.session.add(control)
             db.session.commit()
