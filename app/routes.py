@@ -58,9 +58,6 @@ def index():
         status = bool(int(request.form["q"]))
         server_date = datetime.now(pytz.timezone('America/Caracas'))
         print(f" HORA DE SERVIDOR: {str(server_date)}")
-        # now_vzla = server_date.astimezone(tz.gettz("America/Caracas"))
-        # print(f" HORA DE VENEZUELA: {str(now_vzla)}")
-        # now = now_vzla
         control = ParkinsonControl(status=status, starttime=server_date, user_id=user_id)
         try:
             db.session.add(control)
