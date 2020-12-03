@@ -27,11 +27,8 @@ def get_control(base_query):
     while n < n_register - 1:
         delta = no_time + (base_query[n].starttime - base_query[n + 1].starttime)
         control_dict["delta"] = delta.strftime("%H:%M:%S")
-        # print("Hora de la base de datos {}".format(str(base_query[n + 1].starttime)))
         date_vzla = base_query[n + 1].starttime.astimezone(pytz.timezone("America/Caracas")).strftime("%d - %B - %Y | %I:%M %p")
-        print(f"HORA VENEZUELA DE LA DB: {date_vzla}")
         control_dict["date"] = date_vzla
-        # print("Hora DB despues de formateo {}".format(str(base_query[n + 1].starttime)))
         control_dict["status"] = get_state(base_query[n + 1].status)
         control_list.append(control_dict.copy())
         n += 1
@@ -46,7 +43,7 @@ def index():
     first_entry = False
     control_db = ParkinsonControl.query.filter_by(user_id=user_id).order_by(ParkinsonControl.starttime.desc())
     if control_db.count() == 0:
-        status_db = False
+        status_db = 2
     else:
         status_db = control_db[0].status
     #####

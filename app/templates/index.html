@@ -13,9 +13,18 @@
                     <input type="radio" id="customRadioInline2" name="q" value="1" class="custom-control-input" checked>
                     <label class="custom-control-label" for="customRadioInline2">ON</label>
                 </div>
-            {% else %}
+            {% elif status_db == False %}
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline1" name="q" value="0" class="custom-control-input" checked>
+                    <label class="custom-control-label" for="customRadioInline1">OFF</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="customRadioInline2" name="q" value="1" class="custom-control-input" onchange="this.form.submit()">
+                    <label class="custom-control-label" for="customRadioInline2">ON</label>
+                </div>
+            {% else %}
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="customRadioInline1" name="q" value="0" class="custom-control-input" onchange="this.form.submit()">
                     <label class="custom-control-label" for="customRadioInline1">OFF</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
