@@ -29,8 +29,8 @@ def get_control(base_query):
         control_dict["delta"] = delta.strftime("%H:%M:%S")
         # print("Hora de la base de datos {}".format(str(base_query[n + 1].starttime)))
         date_vzla = base_query[n + 1].starttime.astimezone(pytz.timezone("America/Caracas")).strftime("%d - %B - %Y | %I:%M %p")
-        print(f"HORA VENEZUELA DE LA DB {date_vzla}")
-        control_dict["date"] = date_vzla.strftime("%d - %B - %Y | %I:%M %p")
+        print(f"HORA VENEZUELA DE LA DB: {date_vzla}")
+        control_dict["date"] = date_vzla
         # print("Hora DB despues de formateo {}".format(str(base_query[n + 1].starttime)))
         control_dict["status"] = get_state(base_query[n + 1].status)
         control_list.append(control_dict.copy())
@@ -52,14 +52,12 @@ def index():
     #####
         if control_db.count() > 1:
             control_list = get_control(control_db)
-            # print(f"HORA DE LA DB {control_list[0]['date']}")
         elif control_db.count() == 1:
             first_entry = True
     #####
     if request.method == "POST":
         status = bool(int(request.form["q"]))
-        server_date = datetime.now(pytz.timezone('America/Caracas'))
-        # print(f" HORA DE SERVIDOR: {str(server_date)}")
+        server_date = datetime.now()
         control = ParkinsonControl(status=status, starttime=server_date, user_id=user_id)
         try:
             db.session.add(control)
