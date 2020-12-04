@@ -30,6 +30,7 @@ def get_control(base_query):
         date_vzla = base_query[n + 1].starttime.astimezone(pytz.timezone("America/Caracas")).strftime("%d - %B - %Y | %I:%M %p")
         control_dict["date"] = date_vzla
         control_dict["status"] = get_state(base_query[n + 1].status)
+        control_dict["uid"] = base_query[n].id
         control_list.append(control_dict.copy())
         n += 1
 
@@ -53,15 +54,28 @@ def index():
             first_entry = True
     #####
     if request.method == "POST":
-        status = bool(int(request.form["q"]))
-        server_date = datetime.now()
-        control = ParkinsonControl(status=status, starttime=server_date, user_id=user_id)
-        try:
-            db.session.add(control)
-            db.session.commit()
-        except:
-            db.session.rollback()
-        return redirect(url_for("index"))
+        if request.form.get("delete"):
+            print(f"ID del registro a borrar: {request.form['delete']}")
+            uid_status = request.form["delete"]
+            uid_delete = ParkinsonControl.query.filter_by(id=uid_status).first()
+            try:
+                db.session.delete(uid_delete)
+                db.session.commit()
+                print("BORRE EL REGISTRO SIN PEO")
+                return redirect(url_for("index"))
+            except:
+                db.session.rollback()
+                print("NO BORRË UN Coño")
+        else:
+            status = bool(int(request.form["q"]))
+            server_date = datetime.now()
+            control = ParkinsonControl(status=status, starttime=server_date, user_id=user_id)
+            try:
+                db.session.add(control)
+                db.session.commit()
+            except:
+                db.session.rollback()
+            return redirect(url_for("index"))
     return render_template("index.html", status_db=status_db, control_list=control_list, first_entry=first_entry)
 
 

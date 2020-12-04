@@ -51,9 +51,20 @@
                     {% else %}
                         <tr class="table-danger">
                     {% endif %}
-                            <td><b>{{ item["status"] }}</b></td>
-                            <td>{{ item["delta"] }}</td>
-                            <td>{{ item["date"] }}</td>
+                            {% if loop.index == 1 %}    
+                                <td><b>{{ item["status"] }}</b></td>
+                                <td>{{ item["delta"] }}</td>
+                                <td class="d-flex justify-content-between">
+                                    <span>{{ item["date"] }}</span>
+                                    <form action="{{ url_for('index') }}" method="POST">
+                                        <button type="submit" class="btn btn-secondary btn-sm" name="delete" value="{{ item['uid'] }}">Delete</button>
+                                    </form>
+                                </td>
+                            {% else %}
+                                <td><b>{{ item["status"] }}</b></td>
+                                <td>{{ item["delta"] }}</td>
+                                <td>{{ item["date"] }}</td>
+                            {% endif %}
                         </tr>
                 {% endfor %}
             {% elif first_entry %}
