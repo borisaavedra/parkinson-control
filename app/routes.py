@@ -62,11 +62,11 @@ def index():
             try:
                 db.session.delete(uid_delete)
                 db.session.commit()
-                flash('Last state was deleted successfuly')
+                flash('Last state was deleted successfuly', "success")
                 return redirect(url_for("index"))
             except:
                 db.session.rollback()
-                flash('Something was worng. Please try again')
+                flash('Something was worng. Please try again', "danger")
         else: # add new entry
             status = bool(int(request.form["q"]))
             server_date = datetime.now()
@@ -88,7 +88,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Invalid username or password', "danger")
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
