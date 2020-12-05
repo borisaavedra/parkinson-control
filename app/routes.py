@@ -54,6 +54,7 @@ def index():
             first_entry = True
     #####
     if request.method == "POST":
+        # Delete de last entry
         if request.form.get("delete"):
             print(f"ID del registro a borrar: {request.form['delete']}")
             uid_status = request.form["delete"]
@@ -61,12 +62,12 @@ def index():
             try:
                 db.session.delete(uid_delete)
                 db.session.commit()
-                print("BORRE EL REGISTRO SIN PEO")
+                flash('Last state was deleted successfuly')
                 return redirect(url_for("index"))
             except:
                 db.session.rollback()
-                print("NO BORRË UN Coño")
-        else:
+                flash('Something was worng. Please try again')
+        else: # add new entry
             status = bool(int(request.form["q"]))
             server_date = datetime.now()
             control = ParkinsonControl(status=status, starttime=server_date, user_id=user_id)
