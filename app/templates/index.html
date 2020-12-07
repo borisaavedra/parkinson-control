@@ -34,6 +34,29 @@
             {% endif %}
         </form>
     </div>
+    <section class="my-4">
+        <div class="container">
+            <h6 class="mb-4"><strong> What do you feel right now?</strong></h6>
+            <form action="{{ url_for('feeling') }}" method="POST">
+                <div class="d-flex justify-content-center mb-4">
+                        <div class="row">
+                        {% for feel in feelings %}
+                            <div class="col-4">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox{{ loop.index }}" name="{{ loop.index }}" value="{{ loop.index }}" onchange="document.getElementById('submitFelling').disabled = false">
+                                    <label class="form-check-label" for="inlineCheckbox{{ loop.index }}">{{ feel }}</label>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <input class="btn btn-outline-secondary mr-4" type="reset" value="Clear" onclick="document.getElementById('submitFelling').disabled = true">
+                    <input id="submitFelling" class="btn btn-primary" name="feelings" type="submit" value="Save" disabled>
+                </div>
+            </form>
+        </div>
+    </section>
     <h6 class="mt-4">Last 6 states</h>
     <table class="table">
         <thead>

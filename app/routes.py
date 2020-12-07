@@ -2,12 +2,13 @@ from flask import render_template, url_for, redirect, flash, request
 from app import app, db
 from app.forms import LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, ParkinsonControl
+from app.models import User, ParkinsonControl, Feeling
 from werkzeug.urls import url_parse
 from datetime import datetime
 from dateutil import tz
 import pytz
 import sqlalchemy.exc
+from config import Config
 
 
 def get_control(base_query):
@@ -40,6 +41,7 @@ def get_control(base_query):
 @login_required
 def index():
     user_id = current_user.id
+    feelings = Config.FEELINGS
     control_list = []
     first_entry = False
     control_db = ParkinsonControl.query.filter_by(user_id=user_id).order_by(ParkinsonControl.starttime.desc())
@@ -77,7 +79,29 @@ def index():
             except:
                 db.session.rollback()
             return redirect(url_for("index"))
-    return render_template("index.html", status_db=status_db, control_list=control_list, first_entry=first_entry)
+    return render_template("index.html", status_db=status_db, control_list=control_list, first_entry=first_entry, feelings=feelings)
+
+
+@app.route("/feeling", methods=["GET", "POST"])
+def feeling():
+    if request.method == "POST":
+        names = Config.FEELINGS
+        f_to_save = []
+        for key, val in request.form.items():
+            try:
+                if names[int(val) - 1]:
+                    f_to_save.append(names[int(val) - 1])
+            except:
+                continue
+        feel = Feeling(feeling=", ".join(f_to_save), user_id=current_user.id)
+        try:
+            db.session.add(feel)
+            db.session.commit()
+            flash("Save successfuly", "success")
+        except:
+            db.session.rollback()
+            flash("Something went wrong. Please try again", "danger")
+    return redirect(url_for("index"))
 
 
 @app.route("/login", methods=["GET", "POST"])
