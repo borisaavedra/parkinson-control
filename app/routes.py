@@ -9,13 +9,14 @@ from dateutil import tz
 import pytz
 import sqlalchemy.exc
 from config import Config
+import csv
 
 
-def get_control(base_query):
+def get_control(base_query, n_register):
     '''Get the last 6 states from database'''
     control_dict = {}
     control_list = []
-    n_register = 7
+    # n_register = 7
     n = 0
     base_query_len = base_query.count()
 
@@ -29,6 +30,8 @@ def get_control(base_query):
         delta = no_time + (base_query[n].starttime - base_query[n + 1].starttime)
         control_dict["delta"] = delta.strftime("%H:%M:%S")
         date_vzla = base_query[n + 1].starttime.astimezone(pytz.timezone("America/Caracas")).strftime("%d - %B - %Y | %I:%M %p")
+        date_raw = base_query[n + 1].starttime.astimezone(pytz.timezone("America/Caracas"))
+        control_dict["date_r"] = date_raw
         control_dict["date"] = date_vzla
         control_dict["status"] = get_state(base_query[n + 1].status)
         control_dict["uid"] = base_query[n].id
@@ -36,6 +39,18 @@ def get_control(base_query):
         n += 1
 
     return control_list
+
+
+def all_data(base_query):
+    data = get_control(base_query, base_query.count())
+    with open("all_data.csv", mode="w") as csv_data:
+        headers = ["Estado", "Tiempo", "Fecha", "Hora"]
+        writer = csv.DictWriter(csv_data, fieldnames=headers)
+
+        writer.writeheader()
+        for item in data:
+            writer.writerow({"Estado":item["status"], "Tiempo":item["delta"], "Fecha":item["date_r"].strftime("%x"), "Hora":item["date_r"].strftime("%X")})
+
 
 @app.route("/", methods=["POST", "GET"])
 @login_required
@@ -51,7 +66,7 @@ def index():
         status_db = control_db[0].status
     #####
         if control_db.count() > 1:
-            control_list = get_control(control_db)
+            control_list = get_control(control_db, control_db.count())
         elif control_db.count() == 1:
             first_entry = True
     #####
